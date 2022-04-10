@@ -1,3 +1,8 @@
-from utils.registry import Registry
+from utils import load_obj
 
-EXPERIMENT_REG = Registry("Experimet")
+
+def load_experiment(cfg):
+    experiment = cfg['experiment']
+    cls = "GeneralizedModel"
+    pkg = f"experiments.{experiment}.{cls}"
+    return load_obj(pkg, cls)(cfg)

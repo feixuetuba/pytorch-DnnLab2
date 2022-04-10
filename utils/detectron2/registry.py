@@ -12,10 +12,10 @@ class Registry:
         return  self.__name
 
     def _do_register(self, name: str, obj) -> None:
-        assert name not in self._obj_map, f"An object named '{name}' was already registered in '{self._name}' registry!"
-        self._obj_map[name] = obj
+        assert name not in self.__obj_map, f"An object named '{name}' was already registered in '{self._name}' registry!"
+        self.__obj_map[name] = obj
 
-    def register(self, obj):
+    def register(self, obj=None):
         if obj is None:
             def wrapper(func_or_class):
                 name = func_or_class.__name__
@@ -23,13 +23,13 @@ class Registry:
                 return func_or_class
 
             return wrapper
-
+        print("XXXXX", obj.__name__)
             # used as a function call
         name = obj.__name__
         self._do_register(name, obj)
 
     def get(self, name: str):
-        ret = self._obj_map.get(name)
+        ret = self.__obj_map.get(name)
         if ret is None:
             raise KeyError(
                 "No object named '{}' found in '{}' registry!".format(name, self._name)
@@ -37,14 +37,14 @@ class Registry:
         return ret
 
     def __contains__(self, name: str) -> bool:
-        return name in self._obj_map
+        return name in self.__obj_map
 
     def __repr__(self) -> str:
 
-        return f"Registries: {self._obj_map.items()}"
+        return f"Registries: {self.__obj_map.items()}"
 
     def __iter__(self):
-        return iter(self._obj_map.items())
+        return iter(self.__obj_map.items())
 
         # pyre-fixme[4]: Attribute must be annotated.
 
